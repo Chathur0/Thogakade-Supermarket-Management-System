@@ -101,7 +101,10 @@ public class CustomerFormController implements Initializable {
                     JOptionPane.showMessageDialog(null, "Customer Added Unsuccessfully", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Error Added Customer due to SQL Error");
+                JOptionPane.showMessageDialog(null, "Customer id already exist");
+                System.out.println(e);
+            }catch (NumberFormatException e) {
+                new Alert(Alert.AlertType.ERROR, "Invalid input! Please enter valid numeric values for Salary.").show();
             }
         } else {
             JOptionPane.showMessageDialog(null, "Please fill all fields");

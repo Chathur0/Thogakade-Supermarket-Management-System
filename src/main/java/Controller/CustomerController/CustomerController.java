@@ -1,6 +1,7 @@
 package Controller.CustomerController;
 
 import Model.Customer;
+import Util.CrudUtil;
 import db.DBConnection;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,7 +14,7 @@ public class CustomerController {
 
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
         ObservableList<Customer> allCustomer = FXCollections.observableArrayList();
-        ResultSet resultSet = DBConnection.getInstance().getConnection().prepareStatement("Select * from customer").executeQuery();
+        ResultSet resultSet = CrudUtil.execute("Select * from customer");
         while (resultSet.next()) {
             allCustomer.add(
                     new Customer(
@@ -33,29 +34,26 @@ public class CustomerController {
     }
 
     public static boolean addCustomer(Customer customer) throws SQLException {
-        PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("Insert into customer values(?,?,?,?,?,?,?,?,?)");
-        stmt.setObject(1, customer.getId());
-        stmt.setObject(2, customer.getTitle());
-        stmt.setObject(3, customer.getName());
-        stmt.setObject(4, customer.getDob());
-        stmt.setObject(5, customer.getSalary());
-        stmt.setObject(6, customer.getAddress());
-        stmt.setObject(7, customer.getCity());
-        stmt.setObject(8, customer.getProvince());
-        stmt.setObject(9, customer.getPostalCode());
-        return stmt.executeUpdate() > 0;
+        return CrudUtil.execute(
+                "Insert into customer values(?,?,?,?,?,?,?,?,?)",
+                customer.getId(),
+                customer.getTitle(),
+                customer.getName(),
+                customer.getDob(),
+                customer.getSalary(),
+                customer.getAddress(),
+                customer.getCity(),
+                customer.getProvince(),
+                customer.getPostalCode()
+        );
     }
 
     public static boolean deleteCustomer(String customerID) throws SQLException {
-        PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("Delete from customer where CustID=?");
-        stmt.setObject(1, customerID);
-        return stmt.executeUpdate() > 0;
+        return CrudUtil.execute("Delete from customer where CustID=?", customerID);
     }
 
     public static Customer getCustomer(String customerID) throws SQLException {
-        PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("Select * from customer where CustID=?");
-        stmt.setObject(1, customerID);
-        ResultSet resultSet = stmt.executeQuery();
+        ResultSet resultSet = CrudUtil.execute("Select * from customer where CustID=?", customerID);
         return resultSet.next() ? new Customer(
                 resultSet.getString(1),
                 resultSet.getString(2),
@@ -70,16 +68,17 @@ public class CustomerController {
     }
 
     public static boolean updateCustomer(Customer customer) throws SQLException {
-        PreparedStatement stmt = DBConnection.getInstance().getConnection().prepareStatement("Update customer set CustTitle=?, CustName=?, DOB=?, salary=?, CustAddress=?, City=?, Province=?, PostalCode=? where CustID=?");
-        stmt.setObject(9, customer.getId());
-        stmt.setObject(1, customer.getTitle());
-        stmt.setObject(2, customer.getName());
-        stmt.setObject(3, customer.getDob());
-        stmt.setObject(4, customer.getSalary());
-        stmt.setObject(5, customer.getAddress());
-        stmt.setObject(6, customer.getCity());
-        stmt.setObject(7, customer.getProvince());
-        stmt.setObject(8, customer.getPostalCode());
-        return stmt.executeUpdate() > 0;
+        return CrudUtil.execute(
+                "Update customer set CustTitle=?, CustName=?, DOB=?, salary=?, CustAddress=?, City=?, Province=?, PostalCode=? where CustID=?",
+                customer.getTitle(),
+                customer.getName(),
+                customer.getDob(),
+                customer.getSalary(),
+                customer.getAddress(),
+                customer.getCity(),
+                customer.getProvince(),
+                customer.getPostalCode(),
+                customer.getId()
+        );
     }
 }
