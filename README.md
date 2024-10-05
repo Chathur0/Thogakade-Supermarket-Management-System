@@ -24,13 +24,4 @@ This is a JavaFX-based desktop application designed to help **Thogakade Supermar
 ![Item Management](assets/item_management.png)
 *Item Management Interface*
 
-## Getting Started
-
-Follow these instructions to get a copy of the project up and running on your local machine.
-
-### Prerequisites
-
-1. **Java JDK 11 or above**: [Download Java](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
-2. **MySQL**: [Download MySQL](https://dev.mysql.com/downloads/installer/)
-3. **Maven**: [Download Maven](https://maven.apache.org/install.html)
 
