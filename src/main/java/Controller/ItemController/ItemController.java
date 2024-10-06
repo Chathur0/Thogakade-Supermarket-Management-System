@@ -36,7 +36,7 @@ public class ItemController {
         );
     }
 
-    public static Item getCustomer(String id) throws SQLException {
+    public static Item getItem(String id) throws SQLException {
         ResultSet resultSet = CrudUtil.execute("Select * from item where ItemCode=?", id);
         return resultSet.next() ? new Item(
                 resultSet.getString(1),

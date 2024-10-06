@@ -42,7 +42,7 @@
                 <Font name="System Bold" size="13.0" />
             </font>
         </JFXButton>
-        <TableView fx:id="tblItem" layoutX="55.0" layoutY="282.0" prefHeight="250.0" prefWidth="577.0" stylesheets="@../css/style.css">
+        <TableView fx:id="tblItem" layoutX="55.0" layoutY="282.0" prefHeight="198.0" prefWidth="578.0" stylesheets="@../css/style.css">
             <columns>
                 <TableColumn fx:id="colItemCode" prefWidth="75.0" text="Item Code" />
                 <TableColumn fx:id="colItemName" prefWidth="213.60003662109375" text="Item Name" />
@@ -51,5 +51,10 @@
                 <TableColumn fx:id="colUnitPrice" prefWidth="109.60003662109375" text="Unit Price" />
             </columns>
         </TableView>
+      <JFXButton buttonType="RAISED" layoutX="256.0" layoutY="498.0" onAction="#btnCustomerFormOnAction" prefHeight="27.0" prefWidth="176.0" ripplerFill="#2143a1" style="-fx-background-color: #091538;" text="Customer Form" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="13.0" />
+         </font>
+      </JFXButton>
     </children>
 </AnchorPane>

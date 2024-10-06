@@ -2,15 +2,19 @@ package Controller.ItemController;
 
 import Model.Item;
 import com.jfoenix.controls.JFXTextField;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -92,10 +96,10 @@ public class ItemFormController implements Initializable {
             try {
                 boolean isDeleted = ItemController.deleteItem(txtItemCode.getText());
                 if (isDeleted) {
-                    new Alert(Alert.AlertType.ERROR, txtItemCode.getText()+" Item Deleted").show();
+                    new Alert(Alert.AlertType.ERROR, txtItemCode.getText() + " Item Deleted").show();
                     loadTable();
                     clearAllFields();
-                }else{
+                } else {
                     new Alert(Alert.AlertType.ERROR, "Item not found.").show();
                 }
             } catch (SQLException e) {
@@ -110,10 +114,10 @@ public class ItemFormController implements Initializable {
     void btnSearch(ActionEvent event) {
         if (!txtItemCode.getText().isEmpty()) {
             try {
-                Item item = ItemController.getCustomer(txtItemCode.getText());
+                Item item = ItemController.getItem(txtItemCode.getText());
                 if (item != null) {
                     setTxtFields(item);
-                }else{
+                } else {
                     new Alert(Alert.AlertType.ERROR, "Item not found.").show();
                 }
             } catch (SQLException e) {
@@ -183,6 +187,17 @@ public class ItemFormController implements Initializable {
         try {
             tblItem.setItems(ItemController.getAllItems());
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void btnCustomerFormOnAction(ActionEvent actionEvent) {
+        ((Node)(actionEvent.getSource())).getScene().getWindow().hide();
+        Stage stage = new Stage();
+        try {
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("/view/Customer_form.fxml"))));
+            stage.show();
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
