@@ -2,9 +2,7 @@ package Controller.PlaceOrder;
 
 import Controller.CustomerController.CustomerController;
 import Controller.ItemController.ItemController;
-import Model.CartTM;
-import Model.Customer;
-import Model.Item;
+import Model.*;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import javafx.animation.Animation;
@@ -25,7 +23,9 @@ import javafx.util.Duration;
 import java.net.URL;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -162,15 +162,24 @@ public class PlaceOrderFormController implements Initializable {
         colQty.setCellValueFactory(new PropertyValueFactory<>("qty"));
         colUnitPrice.setCellValueFactory(new PropertyValueFactory<>("unitPrice"));
         colTotal.setCellValueFactory(new PropertyValueFactory<>("total"));
-        for(CartTM c : cart){
-            System.out.println(c);
-        }
         tblCart.setItems(cart);
     }
 
     @FXML
     void btnPlaceOrderOnAction(ActionEvent event) {
-
+        ArrayList<OrderDetails> orderDetails = new ArrayList<>();
+        for (CartTM c1 : cart) {
+            new OrderDetails(txtOrderId.getText(), cmbItemCode.getValue(), c1.getQty(), 0.0);
+        }
+        try {
+            if (OrderController.placeOrder(new Order(txtOrderId.getText(), LocalDate.now(), cmbCustomerId.getValue(), orderDetails))) {
+                new Alert(Alert.AlertType.INFORMATION, "Order Placed!!").show();
+            } else {
+                new Alert(Alert.AlertType.ERROR, "Order Not Placed!!").show();
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -267,5 +276,8 @@ public class PlaceOrderFormController implements Initializable {
     }
 
     public void btnRemoveToCartOnAction(ActionEvent actionEvent) {
+        for (CartTM c : cart) {
+            System.out.println(c);
+        }
     }
 }

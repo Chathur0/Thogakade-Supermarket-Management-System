@@ -1,12 +1,14 @@
 package Controller.ItemController;
 
 import Model.Item;
+import Model.OrderDetails;
 import Util.CrudUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class ItemController {
     public static ObservableList<Item> getAllItems() throws SQLException {
@@ -59,6 +61,23 @@ public class ItemController {
                 item.getUnitePrice(),
                 item.getQtyOnHand(),
                 item.getItemCode()
+        );
+    }
+
+    public static boolean updateStock(ArrayList<OrderDetails> orderDetails) throws SQLException {
+        for (OrderDetails order : orderDetails) {
+            if (!updateStock(order)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean updateStock(OrderDetails orderDetails) throws SQLException {
+        return CrudUtil.execute(
+                "Update item set QtyOnHand=QtyOnHand-? WHERE ItemCode=?",
+                orderDetails.getQty(),
+                orderDetails.getItemCode()
         );
     }
 }
